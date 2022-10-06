@@ -17,6 +17,7 @@ def read_csv(filepath: str, sep: str = ";") -> Dict:
     for i in lines[0]:
         res_dict[i] = []
 
+    # здесь все таки нужен range(len()) потому что идет "переворачивание индексов"
     for i in range(1, len(lines) - 1):
         for j, elm in enumerate(lines[0]):
             res_dict[elm].append(lines[i][j])
@@ -32,6 +33,8 @@ def save_csv(filedict: Dict, filepath: str, sep: str = ";") -> None:
     """
     res_file = sep.join([i for i in filedict]) + "\n"
     res_list = [filedict[i] for i in filedict]
+
+    # здесь все таки нужен range(len()) потому что идет "переворачивание индексов"
     for i in range(len(res_list[0])):
         line = []
         for j in range(len(filedict)):
@@ -41,7 +44,6 @@ def save_csv(filedict: Dict, filepath: str, sep: str = ";") -> None:
     with open(filepath, 'w') as file:
         file.write(res_file)
 
-    return
 
 
 def hierarchy(filedict: Dict, department: str = "Департамент", division: str = "Отдел") -> None:
@@ -63,17 +65,15 @@ def hierarchy(filedict: Dict, department: str = "Департамент", divisi
     for i in departments:
         departments[i] = list(set(departments[i]))
 
-    print("------------------------------")
-    print("Список Департаментов и Отделов")
-    print("------------------------------")
+    print('------------------------------')
+    print('Список Департаментов и Отделов')
+    print('------------------------------')
     for i in departments:
-        print(i, ":", ", ".join(departments[i]))
-    print("------------------------------")
-
-    return
+        print(i, ':', ', '.join(departments[i]))
+    print('------------------------------')
 
 
-def cons_report(filedict: Dict, department: str = "Департамент", payment: str = "Оклад", verbose: bool = True) -> Dict:
+def cons_report(filedict: Dict, department: str = 'Департамент', payment: str = 'Оклад', verbose: bool = True) -> Dict:
     """
     сводный отчёт по департаментам: название, численность, мин, макс, среднюю зарплату
     :param filedict: словарь данных
@@ -95,20 +95,20 @@ def cons_report(filedict: Dict, department: str = "Департамент", paym
         departments[i] = [str(i) for i in
                           [len(departments[i]), min(departments[i]), max(departments[i]), int(mean(departments[i]))]]
     if verbose:
-        print("-----------------------------------")
-        print("Сводная статистика по Департаментам")
-        print("-----------------------------------")
-        print("Название : количество - мин зп - макс зп - средняя зп")
+        print('-----------------------------------')
+        print('Сводная статистика по Департаментам')
+        print('-----------------------------------')
+        print('Название : количество - мин зп - макс зп - средняя зп')
         for i in departments:
-            print(i, ":", " - ".join(departments[i]))
-        print("-----------------------------------")
+            print(i, ':', ' - '.join(departments[i]))
+        print('-----------------------------------')
 
     res_dict = {}
-    res_dict["Департамент"] = [i for i in departments]
-    res_dict["Количество сотрудников"] = [departments[i][0] for i in departments]
-    res_dict["Минимальный оклад"] = [departments[i][1] for i in departments]
-    res_dict["Максимальный оклад"] = [departments[i][2] for i in departments]
-    res_dict["Средний оклад"] = [departments[i][3] for i in departments]
+    res_dict['Департамент'] = [i for i in departments]
+    res_dict['Количество сотрудников'] = [departments[i][0] for i in departments]
+    res_dict['Минимальный оклад'] = [departments[i][1] for i in departments]
+    res_dict['Максимальный оклад'] = [departments[i][2] for i in departments]
+    res_dict['Средний оклад'] = [departments[i][3] for i in departments]
     return res_dict
 
 
@@ -130,7 +130,7 @@ def menu() -> None:
         answers = ['1', '2', '3', '4']
         answer = '0'
         while answer not in answers:
-            answer = input("Введите номер команды:")
+            answer = input('Введите номер команды:')
 
         if answer == '1':
             hierarchy(data)
@@ -138,7 +138,7 @@ def menu() -> None:
             report = cons_report(data)
             report_flag = True
         elif answer == '3':
-            filepath = input("Введите путь для сохранения: ")
+            filepath = input('Введите путь для сохранения: ')
             if report_flag:
                 save_csv(report, filepath)
             else:
